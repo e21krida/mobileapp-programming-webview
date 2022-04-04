@@ -20,11 +20,11 @@ public class MainActivity extends AppCompatActivity {
     WebView myWebView;
 
     public void showExternalWebPage(){
-        // TODO: Add your code for showing external web page here
+        myWebView.loadUrl("https://wwwlab.iit.his.se/e21krida/Webbplats-Dugga/");
     }
 
     public void showInternalWebPage(){
-        // TODO: Add your code for showing internal web page here
+        myWebView.loadUrl("file:///android_asset/index.html");
     }
 
     @Override
@@ -38,10 +38,6 @@ public class MainActivity extends AppCompatActivity {
         myWebView.getSettings().setJavaScriptEnabled(true);
         myWebView.setWebViewClient(new WebViewClient());
 
-        int mitt_tal = 777;
-        Log.d("greger-debug", "Före Toast.");
-        Toast.makeText(getApplicationContext(),String.valueOf(mitt_tal), Toast.LENGTH_LONG).show();
-        Log.d("greger-debug", "Efter toast.");
         /*
         * Rename your App. Tip: Values->Strings
         * Enable Internet access for your App. Tip: Manifest
@@ -93,12 +89,12 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_external_web) {
-            Log.d("==>","Will display external web page");
+            showExternalWebPage();
             return true;
         }
 
         if (id == R.id.action_internal_web) {
-            Log.d("==>","Will display internal web page");
+            showInternalWebPage();
             return true;
         }
 
