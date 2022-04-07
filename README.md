@@ -1,42 +1,106 @@
-
-# Rapport
-
-**Skriv din rapport här!**
-
-_Du kan ta bort all text som finns sedan tidigare_.
-
-## Följande grundsyn gäller dugga-svar:
-
-- Ett kortfattat svar är att föredra. Svar som är längre än en sida text (skärmdumpar och programkod exkluderat) är onödigt långt.
-- Svaret skall ha minst en snutt programkod.
-- Svaret skall inkludera en kort övergripande förklarande text som redogör för vad respektive snutt programkod gör eller som svarar på annan teorifråga.
-- Svaret skall ha minst en skärmdump. Skärmdumpar skall illustrera exekvering av relevant programkod. Eventuell text i skärmdumpar måste vara läsbar.
-- I de fall detta efterfrågas, dela upp delar av ditt svar i för- och nackdelar. Dina för- respektive nackdelar skall vara i form av punktlistor med kortare stycken (3-4 meningar).
-
-Programkod ska se ut som exemplet nedan. Koden måste vara korrekt indenterad då den blir lättare att läsa vilket gör det lättare att hitta syntaktiska fel.
-
+- Först så namngav jag applikationen genom att skapa stringen i "strings.xml" och hänvisade till denna i "AndroidManifest.xml" som följande
 ```
-function errorCallback(error) {
-    switch(error.code) {
-        case error.PERMISSION_DENIED:
-            // Geolocation API stöds inte, gör något
-            break;
-        case error.POSITION_UNAVAILABLE:
-            // Misslyckat positionsanrop, gör något
-            break;
-        case error.UNKNOWN_ERROR:
-            // Okänt fel, gör något
-            break;
-    }
-}
+<string name="app_name">Krilles App</string>
+
+<application
+    android:allowBackup="true"
+    android:icon="@mipmap/ic_launcher"
+    android:label="@string/app_name"
+    android:roundIcon="@mipmap/ic_launcher_round"
+    android:supportsRtl="true"
+    android:theme="@style/AppTheme">
+```
+Alltså hänvisade till denna inom "android:label".
+
+
+- Sedan så gav jag applikationen rättigheterna till att använda internet genom följande linje kod i "AndroidManifest.xml"
+```
+    <uses-permission android:name="android.permission.INTERNET"/>
 ```
 
-Bilder läggs i samma mapp som markdown-filen.
+- Sedan så ersatte jag den dåvarande TextView till en WebView med tillhörande attribut med sitt egna ID
+```
+    <WebView
+        android:id="@+id/myWebView"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent" />
+```
 
-![](android.png)
+- Sedan så skapade jag variabeln för denna i "MainActivity.java" samt initierade denna inom "onCreate" genom att tilldela den till den skapade variabeln genom "myWebView = findViewById(R.id.myWebView)"
 
-Läs gärna:
+```
+public class MainActivity extends AppCompatActivity {
 
-- Boulos, M.N.K., Warren, J., Gong, J. & Yue, P. (2010) Web GIS in practice VIII: HTML5 and the canvas element for interactive online mapping. International journal of health geographics 9, 14. Shin, Y. &
-- Wunsche, B.C. (2013) A smartphone-based golf simulation exercise game for supporting arthritis patients. 2013 28th International Conference of Image and Vision Computing New Zealand (IVCNZ), IEEE, pp. 459–464.
-- Wohlin, C., Runeson, P., Höst, M., Ohlsson, M.C., Regnell, B., Wesslén, A. (2012) Experimentation in Software Engineering, Berlin, Heidelberg: Springer Berlin Heidelberg.
+    WebView myWebView;
+```
+
+```
+ protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        myWebView = findViewById(R.id.myWebView);
+ ```
+
+ - Sedan gav jag denna applikation rättigheter till att använda sig av JavaScript samt skapade den WebView som kommer att presenteras
+
+ ```
+         myWebView.getSettings().setJavaScriptEnabled(true);
+         myWebView.setWebViewClient(new WebViewClient());
+ ```
+
+ - Sedan så skapade jag en html-fil med namnet "index.html" som lades inom den nyskapade mappen "assets", denna fil blev den interna webbsidan som sedan kommer att visas upp inom mappen, denna fil fick denna styling:
+
+ ```
+ <html>
+ <body>
+ <main>
+     <h1>Hallåjsan</h1>
+     <p>Tjenixen</p>
+ </main>
+ </body>
+ </html>
+ ```
+
+ - Sedan så implementerade jag "loadUrl" för dom två olika hemsidorna under funktionerna "showExternalWebPage" samt "showInternalWebPage"
+
+ ```
+     public void showExternalWebPage(){
+         myWebView.loadUrl("https://wwwlab.iit.his.se/e21krida/Webbplats-Dugga/");
+     }
+
+     public void showInternalWebPage(){
+         myWebView.loadUrl("file:///android_asset/index.html");
+     }
+ ```
+
+ - Slutligen så måste jag kalla på dessa funktioner inom dom knappar som återfinns inom applikationen, detta genom att kalla på dom inom if-satsen för "onOptionsItemSelected" som har valen "action_external_web" samt "action_internal_web"
+
+ ```
+     @Override
+     public boolean onOptionsItemSelected(MenuItem item) {
+         // Handle action bar item clicks here. The action bar will
+         // automatically handle clicks on the Home/Up button, so long
+         // as you specify a parent activity in AndroidManifest.xml.
+         int id = item.getItemId();
+
+         //noinspection SimplifiableIfStatement
+         if (id == R.id.action_external_web) {
+             showExternalWebPage();
+             return true;
+         }
+
+         if (id == R.id.action_internal_web) {
+             showInternalWebPage();
+             return true;
+         }
+ ```
+
+ - Dessa är bilder på applikationen, varav första bilden är för den externa och den andra för den interna.
+
+ ![](extern_hemsida_bild.png);
+
+ ![](intern_hemsida_bild.png);
+
